@@ -260,20 +260,41 @@ class WooProductItemTag {
 }
 
 class MetaData {
-  final int? id;
-  final String? key;
-  final String value;
-
-  MetaData(this.id, this.key, this.value);
+   int? id;
+   String? key;
+   String? value;
+  List<MetaAttributes>? metaAttributes;
+  MetaData(this.id, this.key, this.value,this.metaAttributes);
 
   MetaData.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        key = json['key'],
-        value = json['value'].toString();
+  {
+    id = json['id'];
+    key = json['key'];
+    value = json['value'].toString();
+  if (this.value != null) {
+  if(value is List){
+  metaAttributes=(value as List).map((e) => MetaAttributes.fromJson(e)).toList();
+  }
+  }
+  }
 
   Map<String, dynamic> toJson() => {'id': id, 'key': key, 'value': value};
 }
+class MetaAttributes {
+  final String? title;
+  final String? id;
+  final String? content;
 
+  MetaAttributes({this.title, this.id, this.content});
+
+  MetaAttributes.fromJson(Map<String, dynamic> json):
+    title = json['title'],
+    id = json['id'],
+    content = json['content'];
+
+  Map<String, dynamic> toJson() => {
+    'title':title,'id':id,'content':content};
+}
 class WooProductDefaultAttribute {
   final int? id;
   final String? name;
