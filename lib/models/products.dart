@@ -260,9 +260,9 @@ class WooProductItemTag {
 }
 
 class MetaData {
-   int? id;
-   String? key;
-   String? value;
+  int? id;
+  String? key;
+  dynamic? value;
   List<MetaAttributes>? metaAttributes;
   MetaData(this.id, this.key, this.value,this.metaAttributes);
 
@@ -270,12 +270,12 @@ class MetaData {
   {
     id = json['id'];
     key = json['key'];
-    value = json['value'].toString();
-  if (this.value != null) {
-  if(value is List){
-  metaAttributes=(value as List).map((e) => MetaAttributes.fromJson(e)).toList();
-  }
-  }
+    value = json['value'];
+    if (this.value != null) {
+      if(value is List && key=="yikes_woo_products_tabs"){
+        metaAttributes=(value as List).map((e) => MetaAttributes.fromJson(e)).toList();
+      }
+    }
   }
 
   Map<String, dynamic> toJson() => {'id': id, 'key': key, 'value': value};
@@ -288,9 +288,9 @@ class MetaAttributes {
   MetaAttributes({this.title, this.id, this.content});
 
   MetaAttributes.fromJson(Map<String, dynamic> json):
-    title = json['title'],
-    id = json['id'],
-    content = json['content'];
+        title = json['title'],
+        id = json['id'],
+        content = json['content'];
 
   Map<String, dynamic> toJson() => {
     'title':title,'id':id,'content':content};
@@ -392,13 +392,13 @@ class WooProductItemAttribute {
         options = json['options'].cast<String>();
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'position': position,
-        'visible': visible,
-        'variation': variation,
-        'options': options,
-      };
+    'id': id,
+    'name': name,
+    'position': position,
+    'visible': visible,
+    'variation': variation,
+    'options': options,
+  };
 }
 
 class WooProductDownload {
@@ -414,8 +414,8 @@ class WooProductDownload {
         file = json['file'];
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'file': file,
-      };
+    'id': id,
+    'name': name,
+    'file': file,
+  };
 }
