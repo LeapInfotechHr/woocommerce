@@ -239,9 +239,9 @@ class WooOrder {
     data['date_completed'] = this.dateCompleted;
     data['date_completed_gmt'] = this.dateCompletedGmt;
     data['cart_hash'] = this.cartHash;
-    if (this.metaData != null) {
-      data['meta_data'] = this.metaData!.map((v) => v.toJson()).toList();
-    }
+    // if (this.metaData != null) {
+    //   data['meta_data'] = this.metaData!.map((v) => v.toJson()).toList();
+    // }
     if (this.lineItems != null) {
       data['line_items'] = this.lineItems!.map((v) => v.toJson()).toList();
     }
@@ -492,23 +492,38 @@ class Shipping {
 class MetaData {
   int? id;
   String? key;
-  String? value;
+  dynamic? value;
+  List<MetaAttributes>? metaAttributes;
+  MetaData(this.id, this.key, this.value,this.metaAttributes);
 
-  MetaData({this.id, this.key, this.value});
-
-  MetaData.fromJson(Map<String, dynamic> json) {
+  MetaData.fromJson(Map<String, dynamic> json)
+  {
     id = json['id'];
     key = json['key'];
     value = json['value'];
+    if (this.value != null) {
+      if(value is List && key=="yikes_woo_products_tabs"){
+        metaAttributes=(value as List).map((e) => MetaAttributes.fromJson(e)).toList();
+      }
+    }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['key'] = this.key;
-    data['value'] = this.value;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {'id': id, 'key': key, 'value': value};
+}
+class MetaAttributes {
+  final String? title;
+  final String? id;
+  final String? content;
+
+  MetaAttributes({this.title, this.id, this.content});
+
+  MetaAttributes.fromJson(Map<String, dynamic> json):
+        title = json['title'],
+        id = json['id'],
+        content = json['content'];
+
+  Map<String, dynamic> toJson() => {
+    'title':title,'id':id,'content':content};
 }
 
 class Refunds {
